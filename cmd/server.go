@@ -23,6 +23,7 @@ func SetupApp() {
 	var kafkaPublisher ports.PublisherConfig = messaging.NewKafkaPublisher("localhost")
 	//Setup messaging broker port
 	publisher := ports.GetMessagingInstance(kafkaPublisher)
+
 	//setup user routes
 	user.SetupUserRoutes(router, publisher)
 
@@ -56,6 +57,8 @@ func SetupApp() {
 	if err := server.Shutdown(ctx); err != nil {
 		log.Fatalf("Server shutdown failed: %s\n", err)
 	}
+	//Close down the adapters as well for smoother shutfown
+	defer kafkaPublisher.Close()
 
 	fmt.Println("Server exited gracefully")
 }

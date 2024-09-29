@@ -16,3 +16,7 @@ func NewKafkaPublisher(broker string) *KafkaPublisher {
 func (k *KafkaPublisher) Publish(content any) {
 	fmt.Println("Publishing message ==>", content)
 }
+
+func (k *KafkaPublisher) Close() {
+	fmt.Println("Closing down kafka")
+}

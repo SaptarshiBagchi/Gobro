@@ -4,6 +4,7 @@ import "sync"
 
 type PublisherConfig interface {
 	Publish(content any)
+	Close()
 }
 
 type MessagePublisher struct {
