@@ -15,7 +15,6 @@ func SetupApp() {
 	router := mux.NewRouter()
 
 	//setup message broker adapter
-
 	var kafkaPublisher ports.PublisherConfig = messaging.NewKafkaPublisher("localhost")
 	//Setup messaging broker port
 	publisher := ports.GetMessagingInstance(kafkaPublisher)
