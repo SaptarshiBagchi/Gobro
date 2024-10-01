@@ -17,15 +17,15 @@ type UserService struct {
 }
 
 // !-- Ensuring the singleton
-var userServiceInstance *UserService
-var userServicemu = &sync.Mutex{}
+var (
+	userServiceInstance *UserService
+	userServiceSync     sync.Once
+)
 
 func GetInstance(publisher *ports.MessagePublisher) *UserService {
-	if userServiceInstance == nil {
-		userServicemu.Lock()
-		defer userServicemu.Unlock()
+	userServiceSync.Do(func() {
 		userServiceInstance = &UserService{publisher: publisher}
-	}
+	})
 	return userServiceInstance
 }
 

@@ -12,15 +12,14 @@ type MessagePublisher struct {
 }
 
 var messagePublisherInstance *MessagePublisher
-var messagePublisherMutex = &sync.Mutex{}
+var messageSync sync.Once
 
 func GetMessagingInstance(infra PublisherConfig) *MessagePublisher {
-	messagePublisherMutex.Lock()
-	defer messagePublisherMutex.Unlock()
-	if messagePublisherInstance == nil {
-		messagePublisherInstance = &MessagePublisher{adapter: infra}
-	}
-
+	//Using a different way of singleTon to execute this
+	messageSync.Do(
+		func() {
+			messagePublisherInstance = &MessagePublisher{adapter: infra}
+		})
 	return messagePublisherInstance
 
 }
